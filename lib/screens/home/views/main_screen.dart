@@ -198,18 +198,106 @@ class MainScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 40),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Transactions',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: (){
+                  //   add where you want to go clicking view all
+                  },
+                  child: Text(
+                    'View All',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.outline,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 )
               ],
+            ),
+            const SizedBox(height: 40,),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: 3,
+                  itemBuilder: (context, int i){
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.yellow,
+                                          shape: BoxShape.circle
+                                        ),
+                                      ),
+                                      const Icon(
+                                          Icons.food_bank,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(width: 12,),
+                                  Text(
+                                    'Food',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    '-Tk. 45.00',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                        fontWeight: FontWeight.w400
+                                    ),
+                                  ),
+                                  Text(
+                                    'Today',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Theme.of(context).colorScheme.outline,
+                                        fontWeight: FontWeight.w400
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ),
+                    );
+                  }),
             )
           ],
         ),
