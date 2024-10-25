@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:shonchoi/screens/stat/chart.dart';
 
@@ -28,9 +27,9 @@ class StatScreen extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 20, 12, 12),
-                  child: const MyChart(),
+                child: const Padding(
+                    padding: EdgeInsets.fromLTRB(12, 20, 12, 12),
+                  child: MyChart(),
                 ),
             )
           ],

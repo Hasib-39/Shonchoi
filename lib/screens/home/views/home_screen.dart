@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shonchoi/screens/add_expense/views/add_expense.dart';
 import 'package:shonchoi/screens/home/views/main_screen.dart';
 
 import '../../stat/stats.dart';
@@ -55,7 +56,14 @@ class _HomeScreenState extends State<HomeScreen>{
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-          onPressed: (){},
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const AddExpense(),
+              ),
+            );
+          },
           shape: const CircleBorder(),
           child:Container(
             width: 60,
