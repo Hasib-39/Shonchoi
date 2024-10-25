@@ -14,15 +14,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>{
-
-  var widgetList = {
-    const MainScreen(),
-    const StatScreen(),
-  };
-
   int index = 0;
-
-
+  late Color selectedColor = Colors.blue;
+  Color unselectedColor = Colors.grey;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,19 +26,29 @@ class _HomeScreenState extends State<HomeScreen>{
           top: Radius.circular(30)
         ),
         child : BottomNavigationBar(
-            backgroundColor: Colors.white,
+          onTap: (value){
+            setState(() {
+              index = value;
+            });
+          },
             showSelectedLabels: false,
             showUnselectedLabels: false,
             elevation: 3,
 
-            items: const [
+            items: [
               BottomNavigationBarItem(
                   label: 'Home',
-                  icon: Icon(CupertinoIcons.home)
+                  icon: Icon(
+                    CupertinoIcons.home,
+                    color: index == 0 ? selectedColor:unselectedColor,
+                  )
               ),
               BottomNavigationBarItem(
                 label: 'Stats',
-                icon: Icon(CupertinoIcons.graph_square_fill),
+                icon: Icon(
+                  CupertinoIcons.graph_square_fill,
+                  color: index != 0 ? selectedColor:unselectedColor,
+                ),
               )
             ]
         ),
