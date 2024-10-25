@@ -4,8 +4,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shonchoi/screens/home/views/main_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../stat/stats.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>{
+
+  var widgetList = {
+    const MainScreen(),
+    const StatScreen(),
+  };
+
+  int index = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +72,9 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
       ),
-      body: const MainScreen(),
+      body: index == 0
+      ? const MainScreen()
+      : const StatScreen(),
     );
   }
 }
