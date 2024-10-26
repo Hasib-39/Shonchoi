@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "333196675505",
+    "project_id": "shonchoi-39",
+    "storage_bucket": "shonchoi-39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333196675505:android:86e53eeb4c86c357b21590",
+        "android_client_info": {
+          "package_name": "com.hasib.shonchoi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKOTK8BQF8PmyvzBlfF7G_bTqEoTM6oCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
