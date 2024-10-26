@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:expense_repository/src/expense_repository.dart';
 import 'package:intl/intl_browser.dart';
+import 'package:shonchoi/screens/add_expense/blocs/create_category_bloc/create_category_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class AddExpense extends StatefulWidget {
   const AddExpense({super.key});
@@ -105,8 +109,25 @@ class _AddExpenseState extends State<AddExpense> {
                               bool isExpanded = false;
                               String iconSelected = '';
                               late Color categoryColor = Colors.white;
-                              return StatefulBuilder(
-                                builder: (context, setState) {
+                              TextEditingController categoryNameController = TextEditingController();
+                              TextEditingController categoryIconController = TextEditingController();
+                              TextEditingController categoryColorController = TextEditingController();
+                              bool isLoading = false;
+
+                              return BlocProvider.value(
+                                value: context.read<CreateCategoryBloc>(),
+                                child: BlocListener<CreateCategoryBloc, CreateCategoryState>(
+                                  listener: (context, state) {
+                                    if(state is CreateCategorySuccess){
+                                      Navigator.pop(ctx);
+                                    }else if(state is CreateCategoryLoading){
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                    }
+                                  },
+                                  child: StatefulBuilder(
+                                builder: (ctx, setState) {
                                   return AlertDialog(
                                       backgroundColor: Colors.lightBlue[50],
                                       title: Text(
@@ -119,7 +140,7 @@ class _AddExpenseState extends State<AddExpense> {
                                           children: [
                                             SizedBox(height: 16,),
                                             TextFormField(
-                                              // controller: dateController,
+                                              controller: categoryNameController,
                                               textAlignVertical: TextAlignVertical
                                                   .center,
                                               decoration: InputDecoration(
@@ -141,7 +162,7 @@ class _AddExpenseState extends State<AddExpense> {
                                             ),
                                             SizedBox(height: 16,),
                                             TextFormField(
-                                              // controller: dateController,
+                                              controller: categoryIconController,
                                               onTap: () {
                                                 setState(() {
                                                   isExpanded = !isExpanded;
@@ -223,47 +244,48 @@ class _AddExpenseState extends State<AddExpense> {
                                             ) : Container(),
                                             SizedBox(height: 16,),
                                             TextFormField(
+                                              controller: categoryColorController,
                                               onTap: (){
                                                 showDialog(
                                                     context: context,
                                                     builder: (ctx2){
                                                       return AlertDialog(
                                                         content: Column(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          children: [
-                                                            ColorPicker(
-                                                              pickerColor: categoryColor,
-                                                              onColorChanged: (value){
-                                                                setState((){
-                                                                  categoryColor = value;
-                                                                });
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        ColorPicker(
+                                                          pickerColor: categoryColor,
+                                                          onColorChanged: (value){
+                                                            setState((){
+                                                              categoryColor = value;
+                                                            });
+                                                          },
+                                                        ),
+                                                        SizedBox(
+                                                          width: double.infinity,
+                                                          height: 50,
+                                                          child: TextButton(
+                                                              onPressed: (){
+                                                                Navigator.pop(ctx2);
                                                               },
-                                                            ),
-                                                            SizedBox(
-                                                              width: double.infinity,
-                                                              height: 50,
-                                                              child: TextButton(
-                                                                  onPressed: (){
-                                                                    Navigator.pop(ctx2);
-                                                                  },
-                                                                  style: TextButton.styleFrom(
-                                                                      backgroundColor: Colors.black,
-                                                                      shape: RoundedRectangleBorder(
-                                                                        borderRadius: BorderRadius.circular(12),
-                                                                      )
-                                                                  ),
-                                                                  child: Text(
-                                                                    'Save',
-                                                                    style: TextStyle(
-                                                                        fontSize: 22,
-                                                                        color: Colors.white
-                                                                    ),
+                                                              style: TextButton.styleFrom(
+                                                                  backgroundColor: Colors.black,
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12),
                                                                   )
                                                               ),
-                                                            ),
-                                                          ],
+                                                              child: Text(
+                                                                'Save',
+                                                                style: TextStyle(
+                                                                    fontSize: 22,
+                                                                    color: Colors.white
+                                                                ),
+                                                              )
+                                                          ),
                                                         ),
-                                                      );
+                                                      ],
+                                                                                                            ),
+                                                                                                          );
                                                     }
                                                 );
 
@@ -293,10 +315,23 @@ class _AddExpenseState extends State<AddExpense> {
                                             SizedBox(
                                               width: double.infinity,
                                               height: kToolbarHeight,
-                                              child: TextButton(
+                                              child: isLoading == true ?
+                                                  const Center(
+                                                    child: CircularProgressIndicator(),
+                                                  )
+                                              : TextButton(
                                                   onPressed: (){
                                                   //   Create category object
-                                                    Navigator.pop(context);
+                                                    setState((){
+                                                      isLoading = true;
+                                                    });
+                                                    Category category = Category.empty;
+                                                    category.categoryId = const Uuid().v1();
+                                                    category.name = categoryNameController.text;
+                                                    category.icon = iconSelected;
+                                                    category.color = categoryColor.toString();
+                                                    context.read<CreateCategoryBloc>().add(CreateCategory(category));
+                                                    // Navigator.pop(context);
                                                   },
                                                   style: TextButton.styleFrom(
                                                       backgroundColor: Colors.black,
@@ -318,7 +353,9 @@ class _AddExpenseState extends State<AddExpense> {
                                       )
                                   );
                                 }
-                              );
+                              ),
+),
+);
                             }
                         );
                       },
